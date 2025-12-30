@@ -1,0 +1,18 @@
+import sqlite3
+
+conn = sqlite3.connect("db\\r3call.db")
+cur = conn.cursor()
+
+with open("db\schema.sql","r",encoding="utf-8") as f:
+    cur.execute(f.read())
+
+with open("data\sample.txt","r",encoding="utf-8") as f:
+    for line in f:
+        word, pronunciation, meaning, count = line.strip().split(",")
+        cur.execute(
+            "INSERT INTO words (word, pronunciation, meaning, count) VALUES (?, ?, ?, ?)",
+            (word, pronunciation, meaning, int(count))
+        )
+
+conn.commit()
+conn.close()
