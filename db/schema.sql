@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS words (
     word TEXT UNIQUE,
     pronunciation TEXT,
     meaning TEXT,
-    count INTEGER
+    count INTEGER DEFAULT 0
 )
