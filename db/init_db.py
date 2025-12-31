@@ -10,8 +10,8 @@ with open("data\sample.txt","r",encoding="utf-8") as f:
     for line in f:
         word, pronunciation, meaning, count = line.strip().split(",")
         cur.execute(
-            "INSERT INTO words (word, pronunciation, meaning, count) VALUES (?, ?, ?, ?)",
-            (word, pronunciation, meaning, int(count))
+            "INSERT INTO words (word, pronunciation, meaning) VALUES (?, ?, ?)",
+            (word, pronunciation, meaning)
         )
 
 conn.commit()
