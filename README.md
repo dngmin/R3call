@@ -47,7 +47,7 @@
 ## Roadmap
 - [x] Skeleton UI
 - [x] Initial db
-- [ ] Button function
+- [x] Button function
 - [ ] main util
 - [ ] side util
 - [ ] n차 수정 및 보완
