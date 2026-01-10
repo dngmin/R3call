@@ -1,18 +1,19 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QMessageBox, QDialog
 from PySide6.QtCore import Qt
-from utils import Access_db
+from logic import Access_db
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         # dbからランダムなデータを３つもらい、listにする
-        # list構成
+        # list構造
         # [(id,word,pronunciation,meaning,count),...]
         self.data = Access_db()
         self.words = self.data.select_3words()
         self.word_index = 0
+        self.count_list = [[self.words[i][1],self.words[i][4]] for i in range(3)]
 
         # GUI
         '''
@@ -50,27 +51,32 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(button_container)
 
     def closeEvent(self,event):
-        # dbを閉じてから終了
+        # GUIを隠してユーザーとしてはプログラムが終了したと感じさせる。UX向上
+        self.hide()
+        # dbを(updateまたはdelete)-commit-closeしてから、guiを終了
+        self.data.update_or_delete(self.count_list)
+        self.data.conn.commit()
         self.data.conn.close()
-        print(event,"종료!!!")
         event.accept()
 
     def pass_button_function(self):
+        self.count_list[self.word_index][1] += 1
         self.next_or_quit()
 
     def recall_button_function(self):
         # self.show_word_info()
+        self.count_list[self.word_index][1] = 0
         self.next_or_quit()
-    
+
     def next_or_quit(self):
         self.word_index += 1
         # 単語を３つ見せ終わったら
         if self.word_index == 3:
-            QApplication.quit()
+            self.close()
         else:
             self.word_label.setText(self.words[self.word_index][1])
-    
-    #Todo. 今は使わない
+
+    #Todo. 今は使わない：なぜかフリーズを起こす
     def show_word_info(self):
         word, pronunciation, meaning = self.words[self.word_index][1:4]
 

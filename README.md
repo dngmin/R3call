@@ -48,8 +48,8 @@
 - [x] Skeleton UI
 - [x] Initial db
 - [x] Button function
-- [ ] main util
-- [ ] side util
+- [x] Main logic
+- [ ] Side logic
 - [ ] n차 수정 및 보완
 
 ## To do idea
