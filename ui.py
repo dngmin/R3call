@@ -14,6 +14,8 @@ class MainWindow(QMainWindow):
         self.words = self.data.select_3words()
         self.word_index = 0
         self.count_list = [[self.words[i][1],self.words[i][4]] for i in range(3)]
+        # Preload
+        QDialog(self)
 
         # GUI
         '''
@@ -72,23 +74,26 @@ class MainWindow(QMainWindow):
         self.word_index += 1
         # 単語を３つ見せ終わったら
         if self.word_index == 3:
-            self.close()
+            self.show_word_info()
         else:
             self.word_label.setText(self.words[self.word_index][1])
 
-    #Todo. 今は使わない：なぜかフリーズを起こす
     def show_word_info(self):
-        word, pronunciation, meaning = self.words[self.word_index][1:4]
-
         dialog = QDialog(self)
 
-        dialog.setWindowTitle(f"info")
+        dialog.setWindowTitle(f"Today's word")
 
         layout = QVBoxLayout(dialog)
-        info_label = QLabel(f"word : {word}\npronunciation : {pronunciation}\nmeaning : {meaning}")
-        layout.addWidget(info_label)
+        for word in self.words:
+            word_info = QLabel(
+                f"word : {word[1]}\n"
+                f"pronunciation : {word[2]}\n"
+                f"meaning : {word[3]}"
+            )
+            layout.addWidget(word_info)
 
         dialog.exec()
+        QApplication.quit()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
